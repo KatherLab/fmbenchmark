@@ -19,10 +19,11 @@ We show that a **vision–language foundation model, CONCH, yielded the highest
 
 ---
 
-## Quick‑start
+## Quick‑start <img src="docs/STAMP_logo.svg" width="200px" align="right" />
 
 > ⚠️ **Important Compatibility Notice:**
-> STAMP-Benchmark is based on **STAMP v1.1.1**. It is **not compatible with STAMP v2.0 or later**, which introduces breaking changes to configuration, feature extraction and deployment workflows. 
+> STAMP-Benchmark is based on **STAMP v1.1.1**. It is **not compatible with STAMP v2.0 or later**, which introduces breaking changes to configuration, feature extraction and deployment workflows.
+
 
 For setting up a local environment, note that the following steps are for Ubuntu Linux systems.
 
@@ -68,53 +69,29 @@ All **other commands** are identical to STAMP. Please refer to the [STAMP README
 
 > **Tip:** make sure you run `stamp setup` again after changing `feat_extractor` so that model checkpoints are downloaded automatically where licences permit.
 
-### Supported Feature Extractors
+### Supported Models & Acknowledgements
 
+| `feat_extractor`     | Model Name           | Source                                                                                                                                           |
+|----------------------|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `ctp`                | CTransPath           | [github.com/Xiyue-Wang/TransPath](https://github.com/Xiyue-Wang/TransPath)                                                                       |
+| `chief-ctp`          | CHIEF-CTransPath     | [github.com/hms-dbmi/CHIEF](https://github.com/hms-dbmi/CHIEF)                                                                                   |
+| `uni`                | UNI                  | [github.com/mahmoodlab/UNI](https://github.com/mahmoodlab/UNI)                                                                                   |
+| `provgp`             | Prov-GigaPath        | [github.com/prov-gigapath/prov-gigapath](https://github.com/prov-gigapath/prov-gigapath)                                                         |
+| `hibou-b`            | Hibou-B              | [github.com/HistAI/hibou](https://github.com/HistAI/hibou)                                                                                       |
+| `hibou-l`            | Hibou-L              | [github.com/HistAI/hibou](https://github.com/HistAI/hibou)                                                                                       |
+| `kaiko`              | Kaiko-ViT-L/14       | [github.com/kaiko-ai/towards_large_pathology_fms](https://github.com/kaiko-ai/towards_large_pathology_fms)                                       |
+| `conch`              | CONCH                | [github.com/mahmoodlab/CONCH](https://github.com/mahmoodlab/CONCH)                                                                               |
+| `phikon`             | Phikon               | [github.com/owkin/HistoSSLscaling](https://github.com/owkin/HistoSSLscaling)                                                                     |
+| `virchow`            | Virchow              | [huggingface.co/paige-ai/Virchow](https://huggingface.co/paige-ai/Virchow)                                                                       |
+| `virchow2`           | Virchow2             | [huggingface.co/paige-ai/Virchow2](https://huggingface.co/paige-ai/Virchow2)                                                                     |
+| `hoptimus0`          | H-optimus-0          | [huggingface.co/bioptimus/H-optimus-0](https://huggingface.co/bioptimus/H-optimus-0)                                                             |
+| `plip`               | PLIP                 | [github.com/PathologyFoundation/plip](https://github.com/PathologyFoundation/plip?tab=readme-ov-file)                                            |
+| `biomedclip`         | BiomedCLIP           | [huggingface.co/microsoft/BiomedCLIP](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224)                           |
+| `dinosslpath`        | DinoSSLPath          | [github.com/lunit-io/benchmark-ssl-pathology](https://github.com/lunit-io/benchmark-ssl-pathology)                                               |
+| `conch`              | MADELEINE            | [github.com/mahmoodlab/MADELEINE](https://github.com/mahmoodlab/MADELEINE)                                                                       |
+| `virchow`            | PRISM                | [huggingface.co/paige-ai/Prism](https://huggingface.co/paige-ai/Prism)                                                                           |
 
-# <img src="docs/STAMP_logo.svg" width="400px" align="right" />
-
-| `feat_extractor`     | Model Name           |
-|----------------------|----------------------|
-| `ctp`                | CTransPath           |
-| `chief-ctp`          | CHIEF-CTransPath     |
-| `uni`                | UNI                  |
-| `provgp`             | Prov-GigaPath        |
-| `hibou-b`            | Hibou-B              |
-| `hibou-l`            | Hibou-L              |
-| `kaiko`              | Kaiko-ViT-L/14       |
-| `conch`              | CONCH                |
-| `phikon`             | Phikon               |
-| `virchow`            | Virchow              |
-| `virchow2`           | Virchow2             |
-| `hoptimus0`          | H-optimus-0          |
-| `plip`               | PLIP                 |
-| `biomedclip`         | BiomedCLIP           |
-| `dinosslpath`        | DinoSSLPath          |
-
----
-
-## Acknowledgements
-
-We thank the authors and developers of the foundation models integrated into this benchmark:
-
-| Model        | Link                                                                                                                                                                   |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| CTransPath   | [https://github.com/Xiyue-Wang/TransPath](https://github.com/Xiyue-Wang/TransPath)                                                                                     |
-| CHIEF        | [https://github.com/hms-dbmi/CHIEF](https://github.com/hms-dbmi/CHIEF)                                                                                                 |
-| UNI          | [https://github.com/mahmoodlab/UNI](https://github.com/mahmoodlab/UNI)                                                                                                 |
-| ProvGigaPath | [https://github.com/prov-gigapath/prov-gigapath](https://github.com/prov-gigapath/prov-gigapath)                                                                       |
-| Hibou‑B/L    | [https://github.com/HistAI/hibou](https://github.com/HistAI/hibou)                                                                                                     |
-| Kaiko        | [https://github.com/kaiko-ai/towards\_large\_pathology\_fms](https://github.com/kaiko-ai/towards_large_pathology_fms)                                                  |
-| CONCH        | [https://github.com/mahmoodlab/CONCH](https://github.com/mahmoodlab/CONCH)                                                                                             |
-| Phikon       | [https://github.com/owkin/HistoSSLscaling](https://github.com/owkin/HistoSSLscaling)                                                                                   |
-| Virchow      | [https://huggingface.co/paige-ai/Virchow](https://huggingface.co/paige-ai/Virchow)                                                                                     |
-| Virchow2     | [https://huggingface.co/paige-ai/Virchow2](https://huggingface.co/paige-ai/Virchow2)                                                                                   |
-| H‑Optimus‑0  | [https://huggingface.co/bioptimus/H-optimus-0](https://huggingface.co/bioptimus/H-optimus-0)                                                                           |
-| PLIP         | [https://github.com/PathologyFoundation/plip?tab=readme-ov-file](https://github.com/PathologyFoundation/plip?tab=readme-ov-file)                                       |
-| BiomedCLIP   | [https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT\_256-vit\_base\_patch16\_224](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) |
-| DinoSSLPath  | [https://github.com/lunit-io/benchmark-ssl-pathology](https://github.com/lunit-io/benchmark-ssl-pathology)                                                             |
-| MADELEINE    | [https://github.com/mahmoodlab/MADELEINE](https://github.com/mahmoodlab/MADELEINE)                                                                                     |
-| PRISM        | [https://huggingface.co/paige-ai/Prism](https://huggingface.co/paige-ai/Prism)                                                                                         |
+We thank the authors and developers of the foundation models integrated into this benchmark.
 
 ---
 
