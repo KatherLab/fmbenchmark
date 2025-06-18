@@ -1,18 +1,30 @@
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/from-whole-slide-image-to-biomarker/classification-on-tcga)](https://paperswithcode.com/sota/classification-on-tcga?p=from-whole-slide-image-to-biomarker)
+# STAMP‑Benchmark
+
+*Benchmarking foundation models as feature extractors for weakly-supervised computational pathology*
+
+[Preprint (arXiv)](https://arxiv.org/abs/2408.15823) · [Original STAMP protocol (Nature Protocols 2024)](https://www.nature.com/articles/s41596-024-01047-2)
+
+---
+
+## Abstract
+
+Numerous pathology foundation models have been developed to extract clinically relevant information. There is currently limited literature independently evaluating these foundation models on external cohorts and clinically‑relevant tasks to uncover adjustments for future improvements. **Here, we benchmark 19 histopathology foundation models on 13 patient cohorts with 6 818 patients and 9 528 slides from lung, colorectal, gastric and breast cancers.** The models were evaluated on weakly supervised tasks related to biomarkers, morphological properties and prognostic outcomes.
+
+We show that a **vision–language foundation model, CONCH, yielded the highest overall performance** when compared to vision‑only models, with **Virchow2** a close second. CONCH’s superiority was, however, less pronounced in low‑data scenarios and low‑prevalence tasks. Experiments reveal that models trained on distinct cohorts learn complementary features to predict the same label and **can be fused to outperform the current state of the art**. An ensemble combining CONCH and Virchow2 predictions outperformed individual models in 55 % of tasks. Moreover, our findings suggest that **data diversity outweighs data volume** for foundation models.
 
 
-> [!Important]
-> STAMP v1.1.0 now uses PyTorch's FlashAttentionV2 implementation, which substantially improves memory efficiency when training. With this update, you *cannot* deploy a saved model from STAMP version ≤ 1.0.3 with this or subsequent versions. Therefore, it is recommended to only update to the latest version of STAMP when starting new experiments. Additionally, the optimizer has been updated from Adam to AdamW. Lastly, STAMP has built-in support for the [UNI Feature extractor](https://www.nature.com/articles/s41591-024-02857-3). Using it will require a Hugging Face account with granted access to the UNI model. For details on fair use, licensing and accessing the UNI model weights, refer to the [UNI GitHub repository](https://www.github.com/mahmoodlab/UNI.git). Note that the installation instructions and results within the STAMP [Nature Protocols paper](https://www.nature.com/articles/s41596-024-01047-2) refer to v1.0.3 of the software. The README file will always contain the most up-to-date installation instructions.
+<p align="center">
+  <img src="assets/fig1.jpg" alt="STAMP‑Benchmark overview" width="1100"/>
+</p>
 
-# STAMP protocol <img src="docs/STAMP_logo.svg" width="250px" align="right" />
-A protocol for Solid Tumor Associative Modeling in Pathology. This repository contains the accompanying code for the steps described in the [Nature Protocols paper](https://www.nature.com/articles/s41596-024-01047-2): 
+---
 
->From whole-slide image to biomarker prediction: end-to-end weakly supervised deep learning in computational pathology 
+## Quick‑start
 
-The code can be executed either in a local environment, or in a containerized environment (preferred in clusters).
+> ⚠️ **Important Compatibility Notice:**
+> STAMP-Benchmark is based on **STAMP v1.1.1**. It is **not compatible with STAMP v2.0 or later**, which introduces breaking changes to configuration, feature extraction and deployment workflows. 
 
-## Using a local environment
-For setting up a local environment, note that the following steps are for Ubuntu Linux systems. For other operating systems such as Windows, MacOS or other Linux distributions, it is recommend to use the containerized environment as described below.
+For setting up a local environment, note that the following steps are for Ubuntu Linux systems.
 
 First, install OpenSlide using either the command below or the [official installation instructions](https://openslide.org/download/#distribution-packages):
 ```bash
@@ -29,7 +41,7 @@ conda install -c conda-forge libstdcxx-ng=12
 
 Then, install the STAMP package via `pip`:
 ```bash
-pip install git+https://github.com/KatherLab/STAMP
+pip install git+https://github.com/KatherLab/STAMP-Benchmark
 ```
 
 Once installed, you will be able to run the command line interface directly using the `stamp` command.
@@ -45,55 +57,86 @@ To download required resources such as the weights of the feature extractor, run
 stamp setup
 ```
 
-> [!Note]
-> If you select a different feature extractor withing the configuration file, such as UNI, you will need to re-run the previous setup command to initiate the downloading step of the UNI feature extractor weights. This will trigger a prompt asking for your Hugging Face access key for the UNI model weights.
+### Selecting a foundation model
 
-## Using the container
-First, install Go and Singularity on your local machine using the [official installation instructions](https://docs.sylabs.io/guides/3.0/user-guide/installation.html). Note that the High-Performance Cluster (HPC) has Go and Singularity pre-installed, and do not require installation.
+In **contrast to the original STAMP**, you can switch the feature extractor in `config.yaml`.
 
-### Build container from scratch (requires root)
-Second, build the container first on your local machine with (fake) root access:
-```bash
-sudo singularity build STAMP_container.sif setup/container.def
+```yaml
+feat_extractor: ctp   # default – CTransPath
 ```
-Note that the container is approximately 6 GB in size.
+All **other commands** are identical to STAMP. Please refer to the [STAMP README](https://github.com/KatherLab/STAMP) for details.
 
-### Download pre-built container
-Alternatively, lab members with access to the ZIH server can download the pre-built container into the base STAMP directory from:
+> **Tip:** make sure you run `stamp setup` again after changing `feat_extractor` so that model checkpoints are downloaded automatically where licences permit.
 
-```bash
-/glw/ekfz_proj/STAMP_container.sif
+# <img src="docs/STAMP_logo.svg" width="600px" align="right" />
+### Supported Feature Extractors
+
+| `feat_extractor`     | Model Name           |
+|----------------------|----------------------|
+| `ctp`                | CTransPath           |
+| `chief-ctp`          | CHIEF-CTransPath     |
+| `uni`                | UNI                  |
+| `provgp`             | Prov-GigaPath        |
+| `hibou-b`            | Hibou-B              |
+| `hibou-l`            | Hibou-L              |
+| `kaiko`              | Kaiko-ViT-L/14       |
+| `conch`              | CONCH                |
+| `phikon`             | Phikon               |
+| `virchow`            | Virchow              |
+| `virchow2`           | Virchow2             |
+| `hoptimus0`          | H-optimus-0          |
+| `plip`               | PLIP                 |
+| `biomedclip`         | BiomedCLIP           |
+| `dinosslpath`        | DinoSSLPath          |
+
+---
+
+## Acknowledgements
+
+We thank the authors and developers of the foundation models integrated into this benchmark:
+
+| Model        | Link                                                                                                                                                                   |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CTransPath   | [https://github.com/Xiyue-Wang/TransPath](https://github.com/Xiyue-Wang/TransPath)                                                                                     |
+| CHIEF        | [https://github.com/hms-dbmi/CHIEF](https://github.com/hms-dbmi/CHIEF)                                                                                                 |
+| UNI          | [https://github.com/mahmoodlab/UNI](https://github.com/mahmoodlab/UNI)                                                                                                 |
+| ProvGigaPath | [https://github.com/prov-gigapath/prov-gigapath](https://github.com/prov-gigapath/prov-gigapath)                                                                       |
+| Hibou‑B/L    | [https://github.com/HistAI/hibou](https://github.com/HistAI/hibou)                                                                                                     |
+| Kaiko        | [https://github.com/kaiko-ai/towards\_large\_pathology\_fms](https://github.com/kaiko-ai/towards_large_pathology_fms)                                                  |
+| CONCH        | [https://github.com/mahmoodlab/CONCH](https://github.com/mahmoodlab/CONCH)                                                                                             |
+| Phikon       | [https://github.com/owkin/HistoSSLscaling](https://github.com/owkin/HistoSSLscaling)                                                                                   |
+| Virchow      | [https://huggingface.co/paige-ai/Virchow](https://huggingface.co/paige-ai/Virchow)                                                                                     |
+| Virchow2     | [https://huggingface.co/paige-ai/Virchow2](https://huggingface.co/paige-ai/Virchow2)                                                                                   |
+| H‑Optimus‑0  | [https://huggingface.co/bioptimus/H-optimus-0](https://huggingface.co/bioptimus/H-optimus-0)                                                                           |
+| PLIP         | [https://github.com/PathologyFoundation/plip?tab=readme-ov-file](https://github.com/PathologyFoundation/plip?tab=readme-ov-file)                                       |
+| BiomedCLIP   | [https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT\_256-vit\_base\_patch16\_224](https://huggingface.co/microsoft/BiomedCLIP-PubMedBERT_256-vit_base_patch16_224) |
+| DinoSSLPath  | [https://github.com/lunit-io/benchmark-ssl-pathology](https://github.com/lunit-io/benchmark-ssl-pathology)                                                             |
+| MADELEINE    | [https://github.com/mahmoodlab/MADELEINE](https://github.com/mahmoodlab/MADELEINE)                                                                                     |
+| PRISM        | [https://huggingface.co/paige-ai/Prism](https://huggingface.co/paige-ai/Prism)                                                                                         |
+
+---
+
+## Citation
+
+Please cite **both** our benchmarking paper *and* the original STAMP protocol if you find this repository useful.
+
+### STAMP‑Benchmark paper
+
+```bibtex
+@article{Neidlinger2024,
+  author    = {Neidlinger, Peter and El Nahhas, Omar S. M. and Muti, Hannah Sophie and Lenz, Tim and Hoffmeister, Michael and Brenner, Hermann and van Treeck, Marko and Langer, Rupert and Dislich, Bastian and Behrens, Hans Michael and R{\"o}cken, Christoph and Foersch, Sebastian and Truhn, Daniel and Marra, Antonio and Saldanha, Oliver Lester and Kather, Jakob Nikolas},
+  title     = {Benchmarking foundation models as feature extractors for weakly-supervised computational pathology},
+  journal   = {arXiv preprint arXiv:2408.15823},
+  year      = {2024},
+  doi       = {10.48550/arXiv.2408.15823},
+  url       = {https://arxiv.org/abs/2408.15823}
+}
 ```
 
-Finally, to download required resources such as the weights of the CTransPath feature extractor, run the following command in the base directory of the protocol:
-```bash
-singularity run --nv -B /mnt:/mnt STAMP_container.sif "stamp --config /path/to/config.yaml setup"
-```
-Note that the binding of filesystems (-B) should be adapted to your own system. GPU acceleration (--nv) should be enabled if GPUs are available in the system, but is optional.
+### STAMP protocol paper
 
-## Running
-Available commands are:
-```bash
-stamp init       # create a new configuration file in the current directory
-stamp setup      # download required resources
-stamp config     # print resolved configuration
-stamp preprocess # normalization and feature extraction with CTransPath
-stamp crossval   # train n_splits models using cross-validation
-stamp train      # train single model
-stamp deploy     # deploy a model on another test set
-stamp statistics # compute stats including ROC curves
-stamp heatmaps   # generate heatmaps
-```
-
-> [!NOTE]  
-> By default, STAMP will use the configuration file `config.yaml` in the current working directory (or, if that does not exist, it will use the [default STAMP configuration file](stamp/config.yaml) shipped with this package). If you want to use a different configuration file, use the `--config` command line option, i.e. `stamp --config some/other/file.yaml train`. You may also run `stamp init` to create a local `config.yaml` in the current working directory initialized to the default settings.
-
-## Reference
-
-If you find our work useful in your research or if you use parts of this code please consider citing our [Nature Protocols publication](https://www.nature.com/articles/s41596-024-01047-2):
-
-```
-@Article{ElNahhas2024,
+```bibtex
+@article{ElNahhas2024,
 author={El Nahhas, Omar S. M. and van Treeck, Marko and W{\"o}lflein, Georg and Unger, Michaela and Ligero, Marta and Lenz, Tim and Wagner, Sophia J. and Hewitt, Katherine J. and Khader, Firas and Foersch, Sebastian and Truhn, Daniel and Kather, Jakob Nikolas},
 title={From whole-slide image to biomarker prediction: end-to-end weakly supervised deep learning in computational pathology},
 journal={Nature Protocols},
@@ -104,5 +147,14 @@ issn={1750-2799},
 doi={10.1038/s41596-024-01047-2},
 url={https://doi.org/10.1038/s41596-024-01047-2}
 }
-
 ```
+
+---
+
+## Licence
+
+STAMP‑Benchmark inherits the licence of STAMP. See `LICENSE` for details. For commercial use, please contact the corresponding authors.
+
+---
+
+*Happy benchmarking!*
