@@ -68,7 +68,7 @@ All **other commands** are identical to STAMP. Please refer to the [STAMP README
 
 > **Tip:** make sure you run `stamp setup` again after changing `feat_extractor` so that model checkpoints are downloaded automatically where licences permit.
 
-# <img src="docs/STAMP_logo.svg" width="600px" align="right" />
+# <img src="docs/STAMP_logo.svg" width="400px" align="right" />
 ### Supported Feature Extractors
 
 | `feat_extractor`     | Model Name           |
