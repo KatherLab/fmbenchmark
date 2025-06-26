@@ -1,4 +1,4 @@
-# STAMP‑Benchmark
+# fmbenchmark
 
 *Benchmarking foundation models as feature extractors for weakly-supervised computational pathology*
 
